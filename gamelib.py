@@ -114,6 +114,11 @@ class GameApp(ttk.Frame):
 
         self.parent.bind('<KeyPress>', self.on_key_pressed)
         self.parent.bind('<KeyRelease>', self.on_key_released)
+
+        self.key_pressed_handler = KeyboardHandler()
+        self.key_released_handler = KeyboardHandler()
+
+        self.init_game()
         
     def create_canvas(self):
         self.canvas = tk.Canvas(self, borderwidth=0,
@@ -161,7 +166,15 @@ class GameApp(ttk.Frame):
         pass
 
     def on_key_pressed(self, event):
-        pass
+        self.key_pressed_handler.handle(event)
 
     def on_key_released(self, event):
-        pass
+        self.key_released_handler.handle(event)
+
+class KeyboardHandler:
+    def __init__(self, successor = None):
+        self.successor = successor 
+
+    def handler(self, event):
+        if self.successor:
+            self.successor.handle(event)
